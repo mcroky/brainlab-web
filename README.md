@@ -36,6 +36,12 @@
 - [ ] **og:image를 절대 URL로 교체** — 배포 주소 확정 후 전 페이지의 `og:image`를 `https://<계정>.github.io/<repo>/images/logo.jpg` 형태로 일괄 변경 (카톡·페북 스크레이퍼는 상대경로 이미지를 못 읽음) + `og:url` 추가 + 카카오톡 공유 디버거로 미리보기 실물 확인
 - [ ] 네이버 서치어드바이저 등록 + sitemap.xml 생성 (도메인 연결 후)
 
+## 📢 소식·자료실 운영 방법 (resources/index.html)
+
+**공지·행사 올리기**: `resources/index.html`의 `NOTICES` 배열 맨 위에 한 블록 추가 → push. (type: "공지"/"행사", 첨부 있으면 files/에 넣고 file 항목 기입)
+**자료 올리기**: PDF를 `files/` 폴더에 넣고 `RESOURCES` 배열에 한 블록 추가 → push.
+⚠️ **절대 금지**: 판매 상품 원본(워크북·카드덱·지도안), 아동 개인정보 파일 — files/는 전 세계 공개이며 커밋 이력에 영구 보존됨. 무료 배포용으로 만든 자료만.
+
 ## 구조
 
 - 페이지: 폴더/`index.html` 방식 (`/about/`, `/program/` …) — URL에 .html 노출 없음
