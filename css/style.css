@@ -61,7 +61,8 @@ ul, ol { padding-left: 1.2em; }
 .section-title { font-size: var(--fs-h2); color: var(--ink-strong); line-height: 1.35; margin-bottom: 12px; }
 .section-lead { color: var(--ink-soft); max-width: 640px; margin-bottom: 36px; }
 .center { text-align: center; }
-.center .section-lead { margin-left: auto; margin-right: auto; }
+.center .section-lead,
+.section-lead.center { margin-left: auto; margin-right: auto; }
 
 /* ---------- 버튼 ---------- */
 .btn {
