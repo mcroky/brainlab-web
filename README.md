@@ -3,12 +3,12 @@
 브레인랩 창의융합교육센터 공식 홈페이지. 빌드 도구 없는 순수 HTML/CSS/JS 정적 사이트 — **push가 곧 배포**입니다.
 설계 문서: `노션_업로드용/43_홈페이지_설계.md` (저장소에 커밋 금지 — 내부 문서)
 
-## 배포 방법 (최초 1회)
+## ✅ 배포 상태 (2026-08-18)
 
-1. GitHub Organization(예: `brainlab-edu`) 생성 → `brainlab-web` **Public** 저장소 생성
-2. 이 폴더를 push
-3. 저장소 Settings → Pages → Source: `main` 브랜치 `/ (root)` 선택
-4. 몇 분 뒤 `https://<org>.github.io/brainlab-web/` 접속 확인
+- **사이트 주소: https://mcroky.github.io/brainlab-web/**
+- 저장소: https://github.com/mcroky/brainlab-web (mcroky 개인 계정 · Public)
+- Pages 소스: `main` 브랜치 `/ (root)` — push하면 1~2분 내 자동 재배포
+- 추후 브레인랩 전용 Organization 생성 시: 저장소 Settings → Transfer ownership으로 이전 (Pages 주소가 org명 기준으로 바뀌므로, 이전은 도메인 연결 전에 할 것)
 
 ## 도메인 연결 (개원 인쇄물 제작 전)
 
