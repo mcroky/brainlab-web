@@ -29,7 +29,7 @@
 - [ ] 전화번호 — `tel:` 링크 포함 (footer, contact)
 - [ ] 카카오톡 채널 개설 후 링크 교체 (contact)
 - [ ] 구글 폼 생성 후 체험 신청 링크 연결 (contact, admission)
-- [ ] 사업자등록번호·대표자명 (footer)
+- [ ] 사업자등록번호 (footer) — 성명·직함 기입 완료
 - [ ] 수강료 게시 — 확정 후 (admission)
 - [ ] 시범반 마감 후 공지 배너 문구 교체 (index.html 상단 `.notice-bar`)
 - [ ] OG 이미지 전용 제작 (현재 logo.jpg 임시 사용)
