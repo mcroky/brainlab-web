@@ -1,0 +1,10 @@
+# ⚠️ 프로젝트 사이트(username.github.io/<repo>/)에서는 이 파일이 루트가 아니라 무효.
+#    커스텀 도메인 연결 전까지는 partnership/index.html의 meta noindex가 실질 보호를 담당.
+#    도메인 연결 시: 아래 규칙 활성화 + Sitemap 주석 해제.
+User-agent: *
+Allow: /
+# v2 공개 전까지 기관 페이지 비노출 (43번 설계서 — 공개 시 아래 줄 삭제)
+Disallow: /partnership/
+
+# 도메인 연결 후 사이트맵 추가:
+# Sitemap: https://[확정도메인]/sitemap.xml
