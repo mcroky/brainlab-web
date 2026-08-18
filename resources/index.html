@@ -60,6 +60,7 @@
       <div class="wrap">
         <h2 class="section-title center">📂 자료실</h2>
         <p class="section-lead center">자유롭게 내려받아 가정에서 활용해 주세요.</p>
+        <div id="filter-row" class="filter-row"></div>
         <div id="resource-list" class="card-grid" style="max-width: 920px; margin: 0 auto;"></div>
         <noscript>
           <p class="center" style="color: var(--ink-soft);">목록을 보려면 브라우저의 자바스크립트를 켜 주세요.</p>
@@ -148,45 +149,89 @@
     ];
 
     (function () {
+      // 날짜 내림차순 자동 정렬 — 목록에 아무 순서로 추가해도 최신이 위로
+      function byDateDesc(a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); }
+      NOTICES.sort(byDateDesc);
+      RESOURCES.sort(byDateDesc);
+
+      function noticeCard(n) {
+        var icon = n.type === "행사" ? "📅" : "📢";
+        return '<div class="card" style="margin-bottom: 14px;">' +
+          '<div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">' +
+          '<span class="badge" style="margin: 0;">' + icon + " " + n.type + '</span>' +
+          '<span class="footnote">' + n.date + '</span></div>' +
+          '<h3 style="margin: 10px 0 6px;">' + n.title + '</h3>' +
+          '<p style="color: var(--ink-soft); font-size: .95rem;">' + n.desc + '</p>' +
+          (n.file ? '<a class="btn btn--ghost" style="margin-top: 12px;" href="../files/' + n.file + '" download>첨부 내려받기</a>' : '') +
+          '</div>';
+      }
+
+      // 공지: 최근 소식은 펼쳐 보이고, 지난 행사·60일 지난 공지는 접어 둠
       var nbox = document.getElementById("notice-list");
       if (!NOTICES.length) {
         nbox.innerHTML = '<div class="card center" style="padding: 36px 24px;"><p style="color: var(--ink-soft);">등록된 공지가 없습니다.</p></div>';
       } else {
-        var nh = "";
+        var today = new Date(); today.setHours(0, 0, 0, 0);
+        var cutoff = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
+        var current = [], past = [];
         for (var i = 0; i < NOTICES.length; i++) {
-          var n = NOTICES[i];
-          var icon = n.type === "행사" ? "📅" : "📢";
-          nh += '<div class="card" style="margin-bottom: 14px;">' +
-            '<div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">' +
-            '<span class="badge" style="margin: 0;">' + icon + " " + n.type + '</span>' +
-            '<span class="footnote">' + n.date + '</span></div>' +
-            '<h3 style="margin: 10px 0 6px;">' + n.title + '</h3>' +
-            '<p style="color: var(--ink-soft); font-size: .95rem;">' + n.desc + '</p>' +
-            (n.file ? '<a class="btn btn--ghost" style="margin-top: 12px;" href="../files/' + n.file + '" download>첨부 내려받기</a>' : '') +
-            '</div>';
+          var n = NOTICES[i], d = new Date(n.date + "T00:00:00");
+          var isPast = (n.type === "행사") ? (d < today) : (d < cutoff);
+          (isPast ? past : current).push(n);
+        }
+        var nh = current.map(noticeCard).join("");
+        if (!current.length) nh = '<div class="card center" style="padding: 28px 24px;"><p style="color: var(--ink-soft);">진행 중인 공지가 없습니다.</p></div>';
+        if (past.length) {
+          nh += '<div class="faq" style="margin-top: 18px;"><details><summary>지난 소식 ' + past.length + '건 보기</summary>' +
+            '<div class="faq-body">' + past.map(noticeCard).join("") + '</div></details></div>';
         }
         nbox.innerHTML = nh;
       }
 
+      // 자료실: 카테고리 필터 + 렌더링
       var box = document.getElementById("resource-list");
+      var frow = document.getElementById("filter-row");
       if (!RESOURCES.length) {
         box.innerHTML = '<div class="card center" style="grid-column: 1 / -1; padding: 48px 24px;">' +
           '<div class="card-icon">📂</div><h3>첫 자료를 준비하고 있습니다</h3>' +
           '<p style="color: var(--ink-soft);">가정 활동지와 학부모 안내 자료를 차례로 올릴 예정입니다.<br>조금만 기다려 주세요.</p></div>';
         return;
       }
-      var html = "";
-      for (var j = 0; j < RESOURCES.length; j++) {
-        var r = RESOURCES[j];
-        html += '<div class="card">' +
-          '<span class="badge">' + r.category + '</span>' +
-          '<h3 style="margin-top: 8px;">' + r.title + '</h3>' +
-          '<p style="color: var(--ink-soft); font-size: .95rem;">' + r.desc + '</p>' +
-          '<p class="footnote" style="margin: 10px 0 14px;">' + r.date + '</p>' +
-          '<a class="btn btn--ghost" href="../files/' + r.file + '" download>내려받기</a>' +
-          '</div>';
+      function renderResources(cat) {
+        var html = "";
+        for (var j = 0; j < RESOURCES.length; j++) {
+          var r = RESOURCES[j];
+          if (cat !== "전체" && r.category !== cat) continue;
+          html += '<div class="card">' +
+            '<span class="badge">' + r.category + '</span>' +
+            '<h3 style="margin-top: 8px;">' + r.title + '</h3>' +
+            '<p style="color: var(--ink-soft); font-size: .95rem;">' + r.desc + '</p>' +
+            '<p class="footnote" style="margin: 10px 0 14px;">' + r.date + '</p>' +
+            '<a class="btn btn--ghost" href="../files/' + r.file + '" download>내려받기</a>' +
+            '</div>';
+        }
+        box.innerHTML = html;
       }
-      box.innerHTML = html;
+      var cats = ["전체"];
+      for (var k = 0; k < RESOURCES.length; k++) {
+        if (cats.indexOf(RESOURCES[k].category) === -1) cats.push(RESOURCES[k].category);
+      }
+      if (cats.length > 2) {
+        var fh = "";
+        for (var c = 0; c < cats.length; c++) {
+          fh += '<button type="button" class="filter-btn' + (c === 0 ? ' is-active' : '') + '" data-cat="' + cats[c] + '">' + cats[c] + '</button>';
+        }
+        frow.innerHTML = fh;
+        frow.addEventListener("click", function (e) {
+          var btn = e.target.closest(".filter-btn");
+          if (!btn) return;
+          var all = frow.querySelectorAll(".filter-btn");
+          for (var x = 0; x < all.length; x++) all[x].classList.remove("is-active");
+          btn.classList.add("is-active");
+          renderResources(btn.getAttribute("data-cat"));
+        });
+      }
+      renderResources("전체");
     })();
   </script>
   <script src="../js/main.js"></script>

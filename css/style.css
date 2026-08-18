@@ -262,6 +262,15 @@ table.styled tr:last-child td { border-bottom: 0; }
 .footer-brand img { height: 46px; margin-bottom: 14px; background: #fff; border-radius: 8px; padding: 5px 10px; }
 .footer-legal { border-top: 1px solid rgba(255,255,255,.14); padding-top: 20px; font-size: .8rem; color: #9a9ea3; line-height: 1.8; }
 
+/* ---------- 자료실 필터 ---------- */
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 26px; }
+.filter-btn {
+  border: 1.5px solid var(--line); background: #fff; color: var(--ink-soft);
+  border-radius: 999px; padding: 7px 18px; font-weight: 600; font-size: .9rem;
+  cursor: pointer; font-family: inherit; min-height: 38px;
+}
+.filter-btn.is-active { background: var(--teal); border-color: var(--teal); color: #fff; }
+
 /* ---------- 유틸 ---------- */
 .badge { display: inline-block; background: var(--teal-soft); color: var(--teal-dark); font-size: .8rem; font-weight: 700; border-radius: 999px; padding: 4px 14px; margin-bottom: 14px; }
 .placeholder { background: #fff3cd; border-radius: 4px; padding: 0 4px; } /* 확정 전 기입 칸 표시 — 오픈 전 전수 제거 */
