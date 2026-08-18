@@ -94,15 +94,11 @@ ul, ol { padding-left: 1.2em; }
 .logo-link { display: flex; align-items: center; gap: 12px; }
 .logo-link:hover { text-decoration: none; }
 .logo-link img { height: 58px; width: auto; }
-.logo-text { display: flex; flex-direction: column; line-height: 1.14; }
-.logo-text strong { font-size: 1.42rem; font-weight: 800; color: var(--ink-strong); letter-spacing: .02em; }
-.logo-text strong em { font-style: normal; color: var(--teal-dark); }
-.logo-text small { font-size: .74rem; font-weight: 600; color: var(--ink-soft); letter-spacing: .27em; }
+.logo-link .logo-word { height: 56px; }
 @media (max-width: 820px) {
   .site-header .wrap { height: 68px; }
   .logo-link img { height: 46px; }
-  .logo-text strong { font-size: 1.16rem; }
-  .logo-text small { font-size: .62rem; letter-spacing: .24em; }
+  .logo-link .logo-word { height: 42px; }
 }
 .main-nav ul { display: flex; gap: 26px; list-style: none; padding: 0; }
 .main-nav a { color: var(--ink); font-weight: 600; font-size: .96rem; }
