@@ -151,7 +151,9 @@ ul, ol { padding-left: 1.2em; }
   border-radius: var(--radius-lg);
   padding: 28px 24px;
   box-shadow: var(--shadow);
+  transition: transform .22s ease, box-shadow .22s ease;
 }
+.card:hover { transform: translateY(-5px); box-shadow: 0 14px 34px rgba(38, 40, 42, .13); }
 .card .card-icon { font-size: 1.9rem; margin-bottom: 12px; }
 .card h3 { font-size: var(--fs-h3); color: var(--ink-strong); margin-bottom: 8px; }
 .card p { font-size: .95rem; color: var(--ink-soft); }
@@ -261,6 +263,16 @@ table.styled tr:last-child td { border-bottom: 0; }
 .site-footer a:hover { color: #fff; }
 .footer-brand img { height: 46px; margin-bottom: 14px; background: #fff; border-radius: 8px; padding: 5px 10px; }
 .footer-legal { border-top: 1px solid rgba(255,255,255,.14); padding-top: 20px; font-size: .8rem; color: #9a9ea3; line-height: 1.8; }
+
+/* ---------- 스크롤 리빌 (은은한 등장 효과 — JS가 .reveal 부여) ---------- */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.topic { transition: transform .2s ease; }
+.topic:hover { transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .card, .card:hover, .topic:hover, .btn:hover { transform: none !important; transition: none !important; }
+}
 
 /* ---------- 자료실 필터 ---------- */
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 26px; }
