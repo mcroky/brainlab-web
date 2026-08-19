@@ -290,17 +290,44 @@ table.styled tr:last-child td { border-bottom: 0; }
 .change-demo .arrow { animation: nudgeX 1.7s ease-in-out infinite; }
 @keyframes nudgeXRot { 0%, 100% { transform: rotate(90deg) translateX(0); } 50% { transform: rotate(90deg) translateX(7px); } }
 @media (max-width: 640px) { .change-demo .arrow { animation-name: nudgeXRot; } }
-/* 카드 아이콘: 호버 시 장난스럽게 갸웃 */
+/* 카드 아이콘: 등장할 때 한 번 갸웃(모바일 포함 전 페이지) + 호버 시에도 */
 .card .card-icon { transition: transform .25s ease; }
 .card:hover .card-icon { transform: scale(1.15) rotate(-6deg); }
+@keyframes wiggle {
+  0% { transform: rotate(0); }
+  30% { transform: rotate(-9deg) scale(1.14); }
+  60% { transform: rotate(6deg) scale(1.06); }
+  100% { transform: rotate(0) scale(1); }
+}
+.card.is-visible .card-icon { animation: wiggle .7s ease .3s 1; }
 /* 등록 절차 번호: 등장할 때 통통 팝 */
 .step.is-visible::before { animation: popIn .5s cubic-bezier(.34, 1.56, .64, 1) both; }
 @keyframes popIn { from { transform: scale(.2); } to { transform: scale(1); } }
+/* 떠다니는 가베 조각 — 각 페이지 첫 섹션 배경 (JS가 주입) */
+.has-shapes { position: relative; overflow: hidden; }
+.has-shapes > .wrap { position: relative; z-index: 1; }
+.float-shapes { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.float-shape { position: absolute; opacity: .8; animation: floatY var(--fd, 10s) ease-in-out infinite alternate; }
+@keyframes floatY {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-24px) rotate(14deg); }
+}
+/* CTA 밴드: 천천히 흐르는 그라데이션 */
+.cta-band {
+  background: linear-gradient(115deg, #2eb5a5, #1f9084, #3dbb8f, #2eb5a5);
+  background-size: 280% 280%;
+  animation: ctaFlow 13s ease infinite;
+}
+@keyframes ctaFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
   .card, .card:hover, .topic:hover, .btn:hover, .card:hover .card-icon { transform: none !important; transition: none !important; }
-  .notice-bar, .change-demo .arrow, .step.is-visible::before { animation: none !important; }
+  .notice-bar, .change-demo .arrow, .step.is-visible::before, .card.is-visible .card-icon, .float-shape, .cta-band { animation: none !important; }
 }
 
 /* ---------- 자료실 필터 ---------- */
