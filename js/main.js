@@ -110,8 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
     var io = new IntersectionObserver(function (entries) {
       for (var i = 0; i < entries.length; i++) {
         if (entries[i].isIntersecting) {
-          entries[i].target.classList.add("is-visible");
-          io.unobserve(entries[i].target);
+          var el = entries[i].target;
+          el.classList.add("is-visible");
+          io.unobserve(el);
+          // 등장 완료 후 순차 지연 제거 — 호버 반응이 모든 항목에서 즉각적이도록
+          (function (node) {
+            setTimeout(function () { node.style.transitionDelay = "0ms"; }, 950);
+          })(el);
         }
       }
     }, { threshold: 0.05, rootMargin: "0px" });
