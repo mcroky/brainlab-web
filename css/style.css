@@ -349,6 +349,22 @@ body { animation: pageIn .45s ease; }
   .scroll-progress { display: none; }
 }
 
+/* ---------- 오늘의 질문 (홈) — 로고의 말풍선을 닮은 카드 ---------- */
+.today-q {
+  max-width: 640px; margin: 0 auto; position: relative;
+  background: var(--teal-soft); border-radius: 26px;
+  padding: 38px 34px; box-shadow: var(--shadow);
+}
+.today-q::after {
+  content: ""; position: absolute; bottom: -16px; left: 58px;
+  border: 12px solid transparent; border-top-color: var(--teal-soft); border-bottom: 0;
+}
+.today-q .q-date { font-size: .85rem; font-weight: 700; color: var(--teal-dark); letter-spacing: .06em; margin-bottom: 10px; }
+.today-q p.q-text {
+  font-size: clamp(1.15rem, 3vw, 1.45rem); font-weight: 800;
+  color: var(--ink-strong); line-height: 1.55; transition: opacity .25s ease;
+}
+
 /* ---------- 자료실 필터 ---------- */
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 26px; }
 .filter-btn {

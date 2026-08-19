@@ -12,7 +12,7 @@
   <meta property="og:image" content="https://mcroky.github.io/brainlab-web/images/logo.jpg">
   <meta property="og:url" content="https://mcroky.github.io/brainlab-web/">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./css/style.css?v=7">
+  <link rel="stylesheet" href="./css/style.css?v=8">
 </head>
 <body>
 
@@ -89,6 +89,87 @@
           한 달 뒤, 저희가 듣고 싶은 대답은 이것입니다 —<br>"엄마, 세모가 네모보다 힘이 세. 내가 해봤는데!"
         </p>
       </div>
+    </section>
+
+    <!-- 3.5 오늘의 질문 — 브레인랩 방식을 지금 바로 체험 -->
+    <section class="section center">
+      <div class="wrap">
+        <span class="badge">오늘의 질문</span>
+        <h2 class="section-title">오늘, 아이에게 이렇게 물어보세요</h2>
+        <p class="section-lead center">"몰라"를 바꾸는 첫걸음은 좋은 질문입니다. 정답은 없어요 — 아이의 대답을 그대로 들어 주세요.</p>
+        <div class="today-q">
+          <div class="q-date" id="qDate"></div>
+          <p class="q-text" id="qText"></p>
+        </div>
+        <div class="btn-row" style="justify-content: center; margin-top: 30px;">
+          <button type="button" class="btn btn--ghost" id="qAnother">다른 질문 보기</button>
+          <a class="btn btn--primary" href="./about/">이런 질문으로 수업합니다</a>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var QUESTIONS = [
+            "만약에 밤이 없어진다면 어떤 일이 생길까?",
+            "왜 비눗방울은 항상 동그랄까?",
+            "숟가락을 밥 먹는 것 말고 다른 데 쓴다면, 뭘 할 수 있을까?",
+            "만약 우리 집 물건 하나가 말을 할 수 있다면, 누구였으면 좋겠어?",
+            "그림자는 왜 아침이랑 저녁에 더 길어질까?",
+            "만약 네가 오늘 하루 선생님이 된다면, 뭘 가르치고 싶어?",
+            "구름은 왜 떨어지지 않을까?",
+            "만약 색깔이 하나만 남는다면, 어떤 색을 남길래? 왜?",
+            "개미는 자기보다 큰 걸 어떻게 들 수 있을까?",
+            "만약 계단이 전부 미끄럼틀로 바뀐다면 어떤 일이 생길까?",
+            "얼음은 왜 물에 뜰까?",
+            "다른 방법으로 학교에 간다면, 어떻게 가고 싶어?",
+            "만약 동물이랑 하루 동안 몸이 바뀐다면, 어떤 동물이 좋아?",
+            "바람은 눈에 안 보이는데, 어떻게 알 수 있을까?",
+            "만약 네 방을 마음대로 바꿀 수 있다면, 뭘 제일 먼저 바꿀래?",
+            "왜 바퀴는 네모가 아니라 동그라미일까?",
+            "만약 하루가 30시간이 된다면, 늘어난 시간에 뭘 할래?",
+            "달은 왜 밤마다 모양이 달라질까?",
+            "종이 한 장으로 할 수 있는 일을 몇 개나 생각해 낼 수 있어?",
+            "만약 비가 물이 아니라 다른 걸로 내린다면, 뭐가 내렸으면 좋겠어?",
+            "자석은 왜 어떤 건 붙고 어떤 건 안 붙을까?",
+            "만약 목소리가 서로 바뀐다면, 누구랑 바꿔 보고 싶어?",
+            "나무는 겨울에 잎이 다 떨어지는데 왜 안 죽을까?",
+            "세상에서 제일 튼튼한 모양은 뭘까? 왜 그렇게 생각해?",
+            "만약 글자가 없다면, 사람들은 어떻게 약속을 기억할까?",
+            "왜 웃음은 옆 사람한테 옮을까?",
+            "만약 네가 게임을 하나 만든다면, 어떤 규칙을 넣을래?",
+            "그릇은 왜 대부분 둥글까?",
+            "만약 신발이 필요 없는 세상이라면, 길은 어떻게 생겼을까?",
+            "소리는 벽을 어떻게 넘어올까?",
+            "만약 하늘을 나는 것과 물속에서 숨 쉬는 것 중 하나를 고른다면?",
+            "지도에 없는 곳을 발견하면, 이름을 뭐라고 붙이고 싶어?",
+            "왜 어떤 노래는 한 번만 들어도 계속 생각날까?",
+            "만약 로봇 친구가 생긴다면, 제일 먼저 뭘 같이 할래?",
+            "돈이 없던 옛날 사람들은 물건을 어떻게 바꿨을까?",
+            "만약 오늘 기분에 색깔을 칠한다면, 무슨 색이야?",
+            "왜 높은 곳에서 보면 모든 게 작아 보일까?",
+            "만약 씨앗 하나를 심을 수 있다면, 뭐가 자라났으면 좋겠어?",
+            "시계가 없다면 시간을 어떻게 알 수 있을까?",
+            "만약 질문을 딱 하나만 할 수 있다면, 누구에게 뭘 물어볼래?"
+          ];
+          var qText = document.getElementById("qText");
+          var qDate = document.getElementById("qDate");
+          var today = new Date();
+          var dayIndex = Math.floor(today.getTime() / 86400000) % QUESTIONS.length;
+          var current = dayIndex;
+          function show(i) {
+            current = i;
+            qText.style.opacity = 0;
+            setTimeout(function () { qText.textContent = QUESTIONS[i]; qText.style.opacity = 1; }, 220);
+          }
+          qDate.textContent = (today.getMonth() + 1) + "월 " + today.getDate() + "일의 질문";
+          qText.textContent = QUESTIONS[dayIndex];
+          document.getElementById("qAnother").addEventListener("click", function () {
+            var next;
+            do { next = Math.floor(Math.random() * QUESTIONS.length); } while (next === current);
+            qDate.textContent = "이런 질문은 어때요?";
+            show(next);
+          });
+        })();
+      </script>
     </section>
 
     <!-- 4. 3가지 차별점 -->
@@ -238,6 +319,6 @@
     </div>
   </footer>
 
-  <script src="./js/main.js?v=7"></script>
+  <script src="./js/main.js?v=8"></script>
 </body>
 </html>
