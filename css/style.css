@@ -314,8 +314,10 @@ table.styled tr:last-child td { border-bottom: 0; }
 }
 /* 스크롤 진행 바 (JS가 폭 갱신) */
 .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--teal); z-index: 200; width: 0; }
-/* 변화기록 타이핑 커서 */
-.typing::after { content: "|"; color: var(--teal); animation: blink .9s steps(1) infinite; }
+/* 변화기록 타이핑 — 투명 원문으로 상자 크기 고정 + 오버레이 타이핑 */
+.type-ghost { visibility: hidden; }
+.type-live { position: absolute; top: 0; left: 0; right: 0; }
+.type-caret { position: absolute; color: var(--teal); animation: blink .9s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 /* 주요 버튼 광택 스윕 */
 .btn--primary { position: relative; overflow: hidden; }

@@ -45,18 +45,21 @@ document.addEventListener("DOMContentLoaded", function () {
         var el = entries[i].target;
         typeObserver.unobserve(el);
         (function (el) {
-          var lines = el.innerHTML.split(/<br\s*\/?>/i).map(function (h) {
+          var full = el.innerHTML;
+          var lines = full.split(/<br\s*\/?>/i).map(function (h) {
             var d = document.createElement("div"); d.innerHTML = h; return d.textContent;
           });
-          el.style.minHeight = el.offsetHeight + "px";
-          el.innerHTML = "";
-          el.classList.add("typing");
+          // 완성 문장을 투명하게 깔아 상자 크기를 고정하고, 그 위에 타이핑을 겹침
+          el.style.position = "relative";
+          el.innerHTML = '<span class="type-ghost" aria-hidden="true">' + full + '</span><span class="type-live"></span>';
+          var live = el.querySelector(".type-live");
+          var caret = '<span class="type-caret" aria-hidden="true">|</span>';
           var li = 0, ci = 0, out = "";
           (function tick() {
-            if (li >= lines.length) { el.classList.remove("typing"); return; }
+            if (li >= lines.length) { el.innerHTML = full; el.style.position = ""; return; }
             ci++;
-            if (ci > lines[li].length) { out += lines[li] + "<br>"; li++; ci = 0; el.innerHTML = out; setTimeout(tick, 120); return; }
-            el.innerHTML = out + lines[li].slice(0, ci);
+            if (ci > lines[li].length) { out += lines[li] + "<br>"; li++; ci = 0; live.innerHTML = out + caret; setTimeout(tick, 120); return; }
+            live.innerHTML = out + lines[li].slice(0, ci) + caret;
             setTimeout(tick, 45);
           })();
         })(el);
