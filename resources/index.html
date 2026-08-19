@@ -144,8 +144,10 @@
     // ═════════════════════════════════════════════════════════════
     var RESOURCES = [
       { category: "가정 활동지", title: "다리 사이클 — 우리 동네 다리 관찰 미션", desc: "집에 오는 길에 다리나 육교를 찾아 관찰해 보는 5분 활동지입니다. 인쇄해서 아이와 함께 해 보세요.", file: "mission_bridge.pdf", date: "2026-08-18" },
+      { category: "참고 연구", title: "코딩로봇을 활용한 유아 소프트웨어교육 프로그램 개발 및 효과", desc: "유아가 코딩로봇 놀이를 통해 컴퓨팅 사고력과 놀이성을 함께 기를 수 있음을 검증한 연구입니다(이유진·이연승, 유아교육연구, 2022). 브레인랩이 참고하는 연구를 소개합니다.", link: "https://doi.org/10.18023/kjece.2022.42.3.013", date: "2026-08-19" },
       // 새 자료 추가 예시 (사용 시 // 제거):
-      // { category: "가정 활동지", title: "제목", desc: "한 줄 설명", file: "파일명.pdf", date: "2026-09-01" },
+      //  - 파일 배포: { category: "가정 활동지", title: "제목", desc: "한 줄 설명", file: "파일명.pdf", date: "2026-09-01" },
+      //  - 외부 링크(논문·기사 등 저작권 자료는 반드시 링크로!): { category: "참고 연구", title: "제목", desc: "한 줄 설명", link: "https://...", date: "2026-09-01" },
     ];
 
     (function () {
@@ -207,7 +209,9 @@
             '<h3 style="margin-top: 8px;">' + r.title + '</h3>' +
             '<p style="color: var(--ink-soft); font-size: .95rem;">' + r.desc + '</p>' +
             '<p class="footnote" style="margin: 10px 0 14px;">' + r.date + '</p>' +
-            '<a class="btn btn--ghost" href="../files/' + r.file + '" download>내려받기</a>' +
+            (r.link
+              ? '<a class="btn btn--ghost" href="' + r.link + '" target="_blank" rel="noopener">원문 보러 가기 ↗</a>'
+              : '<a class="btn btn--ghost" href="../files/' + r.file + '" download>내려받기</a>') +
             '</div>';
         }
         box.innerHTML = html;
