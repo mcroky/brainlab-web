@@ -349,6 +349,16 @@ body { animation: pageIn .45s ease; }
   .scroll-progress { display: none; }
 }
 
+/* ---------- 스와이프 안내 토스트 (모바일 첫 방문 1회) ---------- */
+.swipe-hint {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  background: rgba(38, 40, 42, .9); color: #fff; font-size: .85rem; font-weight: 600;
+  padding: 11px 20px; border-radius: 999px; z-index: 300; white-space: nowrap;
+  animation: hintIn .4s ease, hintOut .4s ease 3.6s forwards;
+}
+@keyframes hintIn { from { opacity: 0; transform: translate(-50%, 14px); } }
+@keyframes hintOut { to { opacity: 0; transform: translate(-50%, 14px); } }
+
 /* ---------- 오늘의 질문 (홈) — 로고의 말풍선을 닮은 카드 ---------- */
 .today-q {
   max-width: 640px; margin: 0 auto; position: relative;

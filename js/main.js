@@ -22,6 +22,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // 모바일 스와이프 페이지 넘기기 — 메뉴 순서대로 좌우 이동
+  (function () {
+    var logo = document.querySelector(".logo-link");
+    var navLinks = document.querySelectorAll(".main-nav li:not(.nav-cta) a");
+    if (!logo || !navLinks.length) return;
+    var pages = [logo];
+    for (var i = 0; i < navLinks.length; i++) pages.push(navLinks[i]);
+    var norm = function (p) { return p.replace(/index\.html$/, ""); };
+    var here = norm(location.pathname);
+    var cur = -1;
+    for (var j = 0; j < pages.length; j++) {
+      if (norm(pages[j].pathname) === here) { cur = j; break; }
+    }
+    if (cur === -1) return; // 메뉴에 없는 페이지(교구 등)에서는 비활성
+
+    // 첫 방문 1회 안내
+    try {
+      if (window.innerWidth <= 820 && !localStorage.getItem("blSwipeHint")) {
+        var hint = document.createElement("div");
+        hint.className = "swipe-hint";
+        hint.textContent = "← 좌우로 밀어 페이지를 넘겨보세요 →";
+        document.body.appendChild(hint);
+        localStorage.setItem("blSwipeHint", "1");
+        setTimeout(function () { hint.remove(); }, 4200);
+      }
+    } catch (err) {}
+    var sx = 0, sy = 0, st = 0, valid = false;
+    document.addEventListener("touchstart", function (e) {
+      valid = false;
+      if (window.innerWidth > 820 || e.touches.length !== 1) return;
+      if (e.target.closest(".table-scroll, .filter-row, input, textarea")) return; // 가로 스크롤 요소 보호
+      var t = e.touches[0];
+      if (t.clientX < 24 || t.clientX > window.innerWidth - 24) return; // 브라우저 가장자리 제스처 회피
+      sx = t.clientX; sy = t.clientY; st = Date.now(); valid = true;
+    }, { passive: true });
+    document.addEventListener("touchend", function (e) {
+      if (!valid) return;
+      var t = e.changedTouches[0];
+      var dx = t.clientX - sx, dy = t.clientY - sy, dt = Date.now() - st;
+      if (dt > 600 || Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 2.2) return; // 확실한 수평 스와이프만
+      var target = dx < 0 ? cur + 1 : cur - 1;
+      if (target < 0 || target >= pages.length) return;
+      if (!reduceMotion) {
+        document.body.style.transition = "opacity .16s ease, transform .16s ease";
+        document.body.style.opacity = "0";
+        document.body.style.transform = "translateX(" + (dx < 0 ? "-20px" : "20px") + ")";
+        setTimeout(function () { location.href = pages[target].href; }, 150);
+      } else {
+        location.href = pages[target].href;
+      }
+    }, { passive: true });
+  })();
+
   // 스크롤 진행 바 — 읽은 만큼 상단에 틸색 줄이 차오름
   if (!reduceMotion) {
     var bar = document.createElement("div");
