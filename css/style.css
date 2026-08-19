@@ -269,9 +269,38 @@ table.styled tr:last-child td { border-bottom: 0; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 .topic { transition: transform .2s ease; }
 .topic:hover { transform: translateY(-3px); }
+
+/* ---------- 미세 모션 모음 ---------- */
+/* 공지 배너: 위에서 살짝 내려오며 등장 */
+@keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.notice-bar { animation: slideDown .5s ease .1s backwards; }
+/* 헤더: 스크롤하면 그림자 살짝 (JS가 .is-scrolled 토글) */
+.site-header { transition: box-shadow .25s ease; }
+.site-header.is-scrolled { box-shadow: 0 4px 18px rgba(38, 40, 42, .08); }
+/* 메뉴 밑줄: 호버 시 왼쪽에서 자라남 (데스크톱만) */
+.main-nav li:not(.nav-cta) a { position: relative; }
+.main-nav li:not(.nav-cta) a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: -4px; height: 2px;
+  background: var(--teal); transition: right .25s ease;
+}
+.main-nav li:not(.nav-cta) a:hover::after { right: 0; }
+@media (max-width: 820px) { .main-nav li a::after { display: none; } }
+/* 변화기록 화살표: 부드럽게 맥동 — 시선 유도 */
+@keyframes nudgeX { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(7px); } }
+.change-demo .arrow { animation: nudgeX 1.7s ease-in-out infinite; }
+@keyframes nudgeXRot { 0%, 100% { transform: rotate(90deg) translateX(0); } 50% { transform: rotate(90deg) translateX(7px); } }
+@media (max-width: 640px) { .change-demo .arrow { animation-name: nudgeXRot; } }
+/* 카드 아이콘: 호버 시 장난스럽게 갸웃 */
+.card .card-icon { transition: transform .25s ease; }
+.card:hover .card-icon { transform: scale(1.15) rotate(-6deg); }
+/* 등록 절차 번호: 등장할 때 통통 팝 */
+.step.is-visible::before { animation: popIn .5s cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes popIn { from { transform: scale(.2); } to { transform: scale(1); } }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .card, .card:hover, .topic:hover, .btn:hover { transform: none !important; transition: none !important; }
+  .card, .card:hover, .topic:hover, .btn:hover, .card:hover .card-icon { transform: none !important; transition: none !important; }
+  .notice-bar, .change-demo .arrow, .step.is-visible::before { animation: none !important; }
 }
 
 /* ---------- 자료실 필터 ---------- */

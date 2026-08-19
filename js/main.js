@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
   var year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
 
+  // 헤더: 스크롤 시 그림자
+  var header = document.querySelector(".site-header");
+  if (header) {
+    var onScroll = function () { header.classList.toggle("is-scrolled", window.scrollY > 8); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   // 스크롤 리빌 — 카드·제목이 살짝 떠오르며 나타나는 은은한 효과
   // (움직임 최소화 설정 사용자와 구형 브라우저에서는 자동 비활성)
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
@@ -34,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
           io.unobserve(entries[i].target);
         }
       }
-    }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+    }, { threshold: 0.05, rootMargin: "0px" });
     for (var t = 0; t < targets.length; t++) {
       var el = targets[t];
       el.classList.add("reveal");
