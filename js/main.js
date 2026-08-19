@@ -20,6 +20,51 @@ document.addEventListener("DOMContentLoaded", function () {
     onScroll();
   }
 
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 스크롤 진행 바 — 읽은 만큼 상단에 틸색 줄이 차오름
+  if (!reduceMotion) {
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    var updateBar = function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+    };
+    window.addEventListener("scroll", updateBar, { passive: true });
+    window.addEventListener("resize", updateBar, { passive: true });
+    updateBar();
+  }
+
+  // 변화기록 타이핑 — 아이의 말이 받아 적히듯 한 글자씩 나타남
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    var bubbles = document.querySelectorAll(".change-demo .speech p");
+    var typeObserver = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        var el = entries[i].target;
+        typeObserver.unobserve(el);
+        (function (el) {
+          var lines = el.innerHTML.split(/<br\s*\/?>/i).map(function (h) {
+            var d = document.createElement("div"); d.innerHTML = h; return d.textContent;
+          });
+          el.style.minHeight = el.offsetHeight + "px";
+          el.innerHTML = "";
+          el.classList.add("typing");
+          var li = 0, ci = 0, out = "";
+          (function tick() {
+            if (li >= lines.length) { el.classList.remove("typing"); return; }
+            ci++;
+            if (ci > lines[li].length) { out += lines[li] + "<br>"; li++; ci = 0; el.innerHTML = out; setTimeout(tick, 120); return; }
+            el.innerHTML = out + lines[li].slice(0, ci);
+            setTimeout(tick, 45);
+          })();
+        })(el);
+      }
+    }, { threshold: 0.6 });
+    for (var b = 0; b < bubbles.length; b++) typeObserver.observe(bubbles[b]);
+  }
+
   // 떠다니는 가베 조각 — 각 페이지 첫 섹션 배경에 로고 조각 색의 도형이 은은하게 부유
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var firstSection = document.querySelector("main > section:first-of-type") || document.querySelector("main > div:first-of-type");
